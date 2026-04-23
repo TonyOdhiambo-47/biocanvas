@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0a0a0a" />
+    <meta
+      name="description"
+      content="The central dogma of molecular biology, animated. Watch DNA replicate, transcribe into mRNA, and translate into protein. Step by step."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Sora:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <title>BioCanvas — watch DNA become you</title>
+  </head>
+  <body>
+    <header class="mw-header">
+      <a class="mw-wordmark" href="https://mwendo.co">mwendo.</a>
+      <div class="mw-tool">biocanvas</div>
+      <a class="mw-gh" href="https://github.com/TonyOdhiambo-47/biocanvas" target="_blank" rel="noopener">github ↗</a>
+    </header>
+
+    <nav class="modules" aria-label="Modules">
+      <button class="mod is-active" data-mod="replication">
+        <span class="mod-num">01</span>
+        <span class="mod-title">DNA replication</span>
+        <span class="mod-sub">how a cell copies its genome</span>
+      </button>
+      <button class="mod" data-mod="transcription">
+        <span class="mod-num">02</span>
+        <span class="mod-title">transcription</span>
+        <span class="mod-sub">DNA to messenger RNA</span>
+      </button>
+      <button class="mod" data-mod="translation">
+        <span class="mod-num">03</span>
+        <span class="mod-title">translation</span>
+        <span class="mod-sub">mRNA to protein</span>
+      </button>
+    </nav>
+
+    <main class="stage">
+      <div class="stage-head">
+        <div class="step-meta">
+          <span class="step-index" id="step-index">step 1 of 8</span>
+          <span class="step-title" id="step-title">the double helix</span>
+        </div>
+        <div class="stage-controls">
+          <button class="btn" id="btn-prev" aria-label="Previous step">prev</button>
+          <button class="btn btn-primary" id="btn-play" aria-label="Play">play</button>
+          <button class="btn" id="btn-next" aria-label="Next step">next</button>
+        </div>
+      </div>
+
+      <div class="canvas-wrap">
+        <canvas id="canvas"></canvas>
+      </div>
+
+      <div class="progress" id="progress" aria-label="Progress"></div>
+
+      <div class="caption" id="caption">
+        DNA is a double helix: two complementary strands wound around each other, held together by hydrogen bonds between base pairs.
+      </div>
+
+      <aside class="sidebar">
+        <div class="side-section">
+          <h3>keyboard</h3>
+          <ul class="kbd-list">
+            <li><kbd>←</kbd> <kbd>→</kbd> step</li>
+            <li><kbd>space</kbd> play / pause</li>
+            <li><kbd>1</kbd>–<kbd>3</kbd> switch module</li>
+          </ul>
+        </div>
+        <div class="side-section">
+          <h3>accuracy</h3>
+          <p class="fine">
+            Sequences shown are illustrative. Base pairing follows Watson-Crick rules.
+            The standard genetic code (NCBI translation table 1) is used verbatim.
+            Enzyme names and mechanisms follow Alberts <em>Molecular Biology of the Cell</em>.
+          </p>
+        </div>
+      </aside>
+    </main>
+
+    <footer class="mw-footer">
+      <span>built by <a href="https://mwendo.co">mwendo</a>. MIT licensed.</span>
+      <a href="https://github.com/TonyOdhiambo-47/biocanvas">contribute on github</a>
+    </footer>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
