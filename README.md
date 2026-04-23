@@ -4,9 +4,9 @@
 
 Three canvases, on one page, with no login and no hidden AI:
 
-1. **DNA replication**. how a cell copies its own genome, semi-conservatively
-2. **Transcription**. how DNA is read out as messenger RNA
-3. **Translation**. how mRNA is decoded into a protein at the ribosome
+1. **DNA replication**: how a cell copies its own genome, semi-conservatively
+2. **Transcription**: how DNA is read out as messenger RNA
+3. **Translation**: how mRNA is decoded into a protein at the ribosome
 
 Live: https://biocanvas.vercel.app
 
