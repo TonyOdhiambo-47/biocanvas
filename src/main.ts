@@ -142,13 +142,29 @@ function wireEvents() {
   });
   btnPlay.addEventListener("click", () => {
     playing = !playing;
-    if (playing && stepProgress >= 1) stepProgress = 0;
-    if (playing && currentStep >= steps().length - 1 && stepProgress >= 1) setStep(0);
+    if (playing) {
+      if (currentStep >= steps().length - 1 && stepProgress >= 1) {
+        setStep(0);
+      } else if (stepProgress >= 1) {
+        stepProgress = 0;
+      }
+    }
     setPlayLabel();
   });
 
   document.addEventListener("keydown", (e) => {
-    if ((e.target as HTMLElement)?.tagName === "INPUT" || (e.target as HTMLElement)?.tagName === "TEXTAREA") return;
+    const t = e.target as HTMLElement | null;
+    const tag = t?.tagName;
+    const isInteractive =
+      tag === "INPUT" ||
+      tag === "TEXTAREA" ||
+      tag === "SELECT" ||
+      tag === "BUTTON" ||
+      tag === "A" ||
+      t?.isContentEditable === true ||
+      t?.hasAttribute("tabindex");
+    if (isInteractive && e.key === " ") return;
+    if (tag === "INPUT" || tag === "TEXTAREA") return;
     if (e.key === "ArrowRight") {
       playing = false;
       setPlayLabel();
@@ -160,7 +176,13 @@ function wireEvents() {
     } else if (e.key === " ") {
       e.preventDefault();
       playing = !playing;
-      if (playing && stepProgress >= 1) stepProgress = 0;
+      if (playing) {
+        if (currentStep >= steps().length - 1 && stepProgress >= 1) {
+          setStep(0);
+        } else if (stepProgress >= 1) {
+          stepProgress = 0;
+        }
+      }
       setPlayLabel();
     } else if (e.key === "1") {
       switchModule("replication");

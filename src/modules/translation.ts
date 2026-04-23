@@ -22,10 +22,10 @@ function drawMRna(
   y: number,
   codons: string[],
   highlightIdx: number | null,
-  opts: { showCap?: boolean } = {}
+  opts: { showCap?: boolean; codonW?: number; gap?: number } = {}
 ) {
-  const codonW = 54;
-  const gap = 6;
+  const codonW = opts.codonW ?? 54;
+  const gap = opts.gap ?? 6;
   const baseW = codonW / 3 - 2;
   ctx.save();
   ctx.strokeStyle = C.mRna;
@@ -69,6 +69,24 @@ function splitCodons(rna: string): string[] {
   const out: string[] = [];
   for (let i = 0; i + 3 <= rna.length; i += 3) out.push(rna.substring(i, i + 3));
   return out;
+}
+
+// Fit `n` codons into the available width, leaving room for the 5' cap and a small margin.
+function layoutCodons(w: number, n: number): { codonW: number; gap: number; total: number; x: number } {
+  const margin = 60;
+  const available = Math.max(200, w - margin);
+  const desired = { codonW: 54, gap: 6 };
+  const maxTotal = n * (desired.codonW + desired.gap) - desired.gap;
+  let codonW = desired.codonW;
+  let gap = desired.gap;
+  if (maxTotal > available) {
+    const scale = available / maxTotal;
+    codonW = Math.max(22, desired.codonW * scale);
+    gap = Math.max(2, desired.gap * scale);
+  }
+  const total = n * (codonW + gap) - gap;
+  const x = (w - total) / 2;
+  return { codonW, gap, total, x };
 }
 
 function drawTRNA(
@@ -135,14 +153,11 @@ const step1: Step = {
     stage(ctx, w, h);
     const op = ease(t);
     const codons = splitCodons(MRNA);
-    const codonW = 54;
-    const gap = 6;
-    const total = codons.length * (codonW + gap) - gap;
-    const x = (w - total) / 2;
+    const { codonW, gap, total, x } = layoutCodons(w, codons.length);
     const y = h / 2 + 20;
     ctx.save();
     ctx.globalAlpha = op;
-    drawMRna(ctx, x, y, codons, 0, { showCap: true });
+    drawMRna(ctx, x, y, codons, 0, { showCap: true, codonW, gap });
     ctx.restore();
 
     ctx.save();
@@ -162,12 +177,9 @@ const step2: Step = {
     stage(ctx, w, h);
     const op = ease(t);
     const codons = splitCodons(MRNA);
-    const codonW = 54;
-    const gap = 6;
-    const total = codons.length * (codonW + gap) - gap;
-    const x = (w - total) / 2;
+    const { codonW, gap, total, x } = layoutCodons(w, codons.length);
     const y = h / 2 + 40;
-    drawMRna(ctx, x, y, codons, 0, { showCap: true });
+    drawMRna(ctx, x, y, codons, 0, { showCap: true, codonW, gap });
 
     // Small subunit
     ctx.save();
@@ -198,12 +210,9 @@ const step3: Step = {
     stage(ctx, w, h);
     const op = ease(t);
     const codons = splitCodons(MRNA);
-    const codonW = 54;
-    const gap = 6;
-    const total = codons.length * (codonW + gap) - gap;
-    const x = (w - total) / 2;
+    const { codonW, gap, total, x } = layoutCodons(w, codons.length);
     const y = h / 2 + 60;
-    drawMRna(ctx, x, y, codons, 0, { showCap: true });
+    drawMRna(ctx, x, y, codons, 0, { showCap: true, codonW, gap });
 
     const cx = x + codonW / 2;
     const rcx = cx + codonW + gap;
@@ -233,12 +242,9 @@ const step4: Step = {
     stage(ctx, w, h);
     const op = ease(t);
     const codons = splitCodons(MRNA);
-    const codonW = 54;
-    const gap = 6;
-    const total = codons.length * (codonW + gap) - gap;
-    const x = (w - total) / 2;
+    const { codonW, gap, total, x } = layoutCodons(w, codons.length);
     const y = h / 2 + 60;
-    drawMRna(ctx, x, y, codons, 1, { showCap: true });
+    drawMRna(ctx, x, y, codons, 1, { showCap: true, codonW, gap });
 
     const cx = x + codonW / 2;
     const rcx = cx + codonW + gap;
@@ -271,12 +277,9 @@ const step5: Step = {
     stage(ctx, w, h);
     const op = ease(t);
     const codons = splitCodons(MRNA);
-    const codonW = 54;
-    const gap = 6;
-    const total = codons.length * (codonW + gap) - gap;
-    const x = (w - total) / 2;
+    const { codonW, gap, total, x } = layoutCodons(w, codons.length);
     const y = h / 2 + 60;
-    drawMRna(ctx, x, y, codons, 1, { showCap: true });
+    drawMRna(ctx, x, y, codons, 1, { showCap: true, codonW, gap });
 
     const cx = x + codonW / 2;
     const rcx = cx + codonW + gap;
@@ -311,13 +314,10 @@ const step6: Step = {
     stage(ctx, w, h);
     const op = ease(t);
     const codons = splitCodons(MRNA);
-    const codonW = 54;
-    const gap = 6;
-    const total = codons.length * (codonW + gap) - gap;
-    const x = (w - total) / 2;
+    const { codonW, gap, total, x } = layoutCodons(w, codons.length);
     const y = h / 2 + 60;
     const shift = lerp(0, codonW + gap, op);
-    drawMRna(ctx, x, y, codons, 2, { showCap: true });
+    drawMRna(ctx, x, y, codons, 2, { showCap: true, codonW, gap });
 
     const cx = x + codonW / 2 + shift;
     const rcx = cx + codonW + gap;
@@ -347,12 +347,9 @@ const step7: Step = {
     stage(ctx, w, h);
     const op = ease(t);
     const codons = splitCodons(MRNA);
-    const codonW = 54;
-    const gap = 6;
-    const total = codons.length * (codonW + gap) - gap;
-    const x = (w - total) / 2;
+    const { codonW, gap, total, x } = layoutCodons(w, codons.length);
     const y = h / 2 + 60;
-    drawMRna(ctx, x, y, codons, codons.length - 1, { showCap: true });
+    drawMRna(ctx, x, y, codons, codons.length - 1, { showCap: true, codonW, gap });
 
     const stopX = x + (codons.length - 1) * (codonW + gap) + codonW / 2;
     // Highlight stop codon in red
